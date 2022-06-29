@@ -40,8 +40,8 @@
 
         <el-main>
           <div style="padding: 10px">
-            <el-input style="width: 300px" suffix-icon="el-icon-search" placeholder="please enter username"></el-input>
-            <el-button style="width: 100px; margin-left: 10px" class="ml-5" type="primary">search</el-button>
+            <el-input style="width: 300px" suffix-icon="el-icon-search" placeholder="please enter username" v-model="username"></el-input>
+            <el-button style="width: 100px; margin-left: 10px" class="ml-5" type="primary" @click="load">search</el-button>
           </div>
           <div>
             <el-button type="primary" class="el-icon-circle-plus-outline">Add</el-button>
@@ -96,7 +96,8 @@ export default {
       tableData: [],
       total:0,
       pageNum: 1,
-      pageSize: 2
+      pageSize: 2,
+      username: ""
     }
   },
   created() {
@@ -104,7 +105,7 @@ export default {
   },
   methods: {
     load() {
-      fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize)
+      fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize+"&username="+this.username)
           .then(res => res.json()).then(res =>{
         console.log(res)
         this.tableData = res.data
