@@ -6,7 +6,9 @@ import com.laisd.vuebackend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -33,9 +35,14 @@ public class UserController {
     }
 
     @GetMapping("/page")
-    public List<User> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
+    public Map<String, Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
         pageNum = (pageNum - 1) * pageSize;
-        return userMapper.selectPage(pageNum, pageSize);
+        List<User> data = userMapper.selectPage(pageNum, pageSize);
+        Integer total = userMapper.selectTotal();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data",data);
+        res.put("total",total);
+        return res;
     }
 
 }

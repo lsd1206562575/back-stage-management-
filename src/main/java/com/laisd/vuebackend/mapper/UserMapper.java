@@ -13,7 +13,7 @@ public interface UserMapper {
 
     @Insert("INSERT into sys_user(username, password, nickname, email, phone, address) VALUES(#{username}, #{password}, #{nickname}, #{email}, #{phone}, #{address}")
     int insert(User user);
-
+    
     int update(User user);
 
     @Delete("DELETE from sys_user where id = #{id}")
@@ -21,4 +21,7 @@ public interface UserMapper {
 
     @Select("select * from sys_user limit #{pageNum}, #{pageSize}")
     List<User> selectPage(Integer pageNum, Integer pageSize);
+
+    @Select("SELECT count(*) from sys_user")
+    Integer selectTotal();
 }

@@ -40,7 +40,7 @@
 
         <el-main>
           <div style="padding: 10px">
-            <el-input style="width: 300px" suffix-icon="el-icon-search" placeholder="please enter content here"></el-input>
+            <el-input style="width: 300px" suffix-icon="el-icon-search" placeholder="please enter username"></el-input>
             <el-button style="width: 100px; margin-left: 10px" class="ml-5" type="primary">search</el-button>
           </div>
           <div>
@@ -49,14 +49,20 @@
             <el-button type="primary" class="el-icon-bottom">Import</el-button>
             <el-button type="primary" class="el-icon-top">Export</el-button>
           </div>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="日期" width="140">
+          <el-table :data="tableData" border stripe>
+            <el-table-column prop="id" label="ID" >
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="username" label="用户名">
+            </el-table-column>
+            <el-table-column prop="nickname" label="昵称" >
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话">
             </el-table-column>
             <el-table-column prop="address" label="地址">
             </el-table-column>
-            <el-table-column>
+            <el-table-column label="Operation" width="200" align="center">
               <template slot-scope="scope">
                 <el-button type="success">Edit<i class="el-icon-edit"></i></el-button>
                 <el-button type="danger">Delete<i class="el-icon-remove-outline"></i></el-button>
@@ -67,11 +73,11 @@
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="currentPage4"
-                :page-sizes="[5, 10, 15, 20]"
-                :page-size="5"
+                :current-page="pageNum"
+                :page-sizes="[2, 5, 10, 15]"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
+                :total="total">
             </el-pagination>
           </div>
         </el-main>
@@ -86,14 +92,32 @@
 export default {
   name: 'HomeView',
   data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    };
     return {
-      msg:'hello',
-      tableData: Array(10).fill(item),
+      tableData: [],
+      total:0,
+      pageNum: 1,
+      pageSize: 2
+    }
+  },
+  created() {
+    this.load()
+  },
+  methods: {
+    load() {
+      fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize)
+          .then(res => res.json()).then(res =>{
+        console.log(res)
+        this.tableData = res.data
+        this.total = res.total
+      })
+    },
+    handleSizeChange(pageSize){
+      this.pageSize = pageSize
+      this.load()
+    },
+    handleCurrentChange(pageNum){
+      this.pageNum = pageNum
+      this.load()
     }
   }
 }
