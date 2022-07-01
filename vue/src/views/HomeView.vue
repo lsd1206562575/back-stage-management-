@@ -47,27 +47,32 @@
           </div>
           <div>
             <el-button type="primary" class="el-icon-circle-plus-outline" @click="handleAdd">Add</el-button>
-            <el-button type="danger" class="el-icon-remove-outline">Delete</el-button>
+            <el-button type="danger" class="el-icon-remove-outline" @click="delBatch">Delete</el-button>
             <el-button type="primary" class="el-icon-bottom">Import</el-button>
             <el-button type="primary" class="el-icon-top">Export</el-button>
           </div>
-          <el-table :data="tableData" border stripe>
-            <el-table-column prop="id" label="ID" >
-            </el-table-column>
-            <el-table-column prop="username" label="用户名">
-            </el-table-column>
-            <el-table-column prop="nickname" label="昵称" >
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱">
-            </el-table-column>
-            <el-table-column prop="phone" label="电话">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
+          <el-table :data="tableData" border stripe @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="username" label="username"></el-table-column>
+            <el-table-column prop="nickname" label="nickname" ></el-table-column>
+            <el-table-column prop="email" label="email"></el-table-column>
+            <el-table-column prop="phone" label="phone"></el-table-column>
+            <el-table-column prop="address" label="address"></el-table-column>
             <el-table-column label="Operation" width="200" align="center">
               <template slot-scope="scope">
-                <el-button type="success">Edit<i class="el-icon-edit"></i></el-button>
-                <el-button type="danger">Delete<i class="el-icon-remove-outline"></i></el-button>
+                <el-button type="success" @click="handleEdit(scope.row)">Edit<i class="el-icon-edit"></i></el-button>
+                <el-popconfirm
+                    style="margin-left: 5px"
+                    confirm-button-text='Yes'
+                    cancel-button-text='No'
+                    icon="el-icon-info"
+                    icon-color="red"
+                    title="Are you sure？"
+                    @confirm="del(scope.row.id)"
+                >
+                  <el-button slot="reference" type="danger">Delete</el-button>
+                </el-popconfirm>
               </template>
             </el-table-column>
           </el-table>
@@ -127,7 +132,8 @@ export default {
       pageSize: 10,
       username: "",
       dialogFormVisible: false,
-      form: {}
+      form: {},
+      multipleSelection: []
     }
   },
   created() {
@@ -153,6 +159,7 @@ export default {
         if (res) {
           this.$message.success("success!")
           this.dialogFormVisible = false
+          this.load()
         } else {
           this.$message.success("failed!")
           this.dialogFormVisible = false
@@ -162,6 +169,36 @@ export default {
     handleAdd(){
       this.dialogFormVisible = true
       this.form = {}
+    },
+    handleEdit(row){
+      this.form = Object.assign({}, row)
+      this.dialogFormVisible = true
+    },
+    del(id){
+      request.delete("/user/" + id).then(res =>{
+        if (res) {
+          this.$message.success("success!")
+          this.load()
+        } else {
+          this.$message.success("failed!")
+        }
+      })
+    },
+    handleSelectionChange(val){
+      console.log(val)
+      this.multipleSelection = val
+    },
+    delBatch(){
+      let ids = this.multipleSelection.map(v => v.id)
+      console.log(ids)
+      request.post("/user/del/batch", ids).then(res =>{
+        if (res) {
+          this.$message.success("success!")
+          this.load()
+        } else {
+          this.$message.success("failed!")
+        }
+      })
     },
     reset(){
       this.username = ""

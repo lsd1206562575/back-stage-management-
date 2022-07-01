@@ -34,6 +34,11 @@ public class UserController {
         return userService.removeById(id);
     }
 
+    @PostMapping("/del/batch")
+    public Boolean deleteBatch(@RequestBody List<Integer> ids) {
+        return userService.removeBatchByIds(ids);
+    }
+
     @GetMapping("/page")
     public Map<String, Object> findPage(@RequestParam Integer pageNum,
                                         @RequestParam Integer pageSize,
