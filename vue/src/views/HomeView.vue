@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div>
     <el-container style="height: 100%; border: 1px solid #eee">
       <el-aside width="sideWidth + 'px'" style="background-color: rgb(238, 241, 246); height: 100%">
         <el-menu :default-openeds="['1', '3']" :collapse-transition="false">
@@ -42,9 +42,11 @@
           <div style="padding: 10px">
             <el-input style="width: 300px" suffix-icon="el-icon-search" placeholder="please enter username" v-model="username"></el-input>
             <el-button style="width: 100px; margin-left: 10px" class="ml-5" type="primary" @click="load">search</el-button>
+            <el-button style="width: 100px; margin-left: 10px" type="warning" @click="reset">reset</el-button>
+
           </div>
           <div>
-            <el-button type="primary" class="el-icon-circle-plus-outline">Add</el-button>
+            <el-button type="primary" class="el-icon-circle-plus-outline" @click="handleAdd">Add</el-button>
             <el-button type="danger" class="el-icon-remove-outline">Delete</el-button>
             <el-button type="primary" class="el-icon-bottom">Import</el-button>
             <el-button type="primary" class="el-icon-top">Export</el-button>
@@ -74,12 +76,36 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="pageNum"
-                :page-sizes="[2, 5, 10, 15]"
+                :page-sizes="[5, 10, 15, 20]"
                 :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
           </div>
+          <el-dialog title="user information" :visible.sync="dialogFormVisible">
+            <el-form label-width="120px">
+              <el-form-item label="username" >
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="nickname" >
+                <el-input v-model="form.nickname" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="email" >
+                <el-input v-model="form.email" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="phone" >
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="address" >
+                <el-input v-model="form.address" autocomplete="off"></el-input>
+              </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">No</el-button>
+              <el-button type="primary" @click="save">Yes</el-button>
+            </div>
+          </el-dialog>
         </el-main>
       </el-container>
     </el-container>
@@ -89,6 +115,8 @@
 <script>
 // @ is an alias to /src
 
+import request from "../../utils/request";
+
 export default {
   name: 'HomeView',
   data() {
@@ -96,8 +124,10 @@ export default {
       tableData: [],
       total:0,
       pageNum: 1,
-      pageSize: 2,
-      username: ""
+      pageSize: 10,
+      username: "",
+      dialogFormVisible: false,
+      form: {}
     }
   },
   created() {
@@ -105,12 +135,37 @@ export default {
   },
   methods: {
     load() {
-      fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize+"&username="+this.username)
-          .then(res => res.json()).then(res =>{
-        console.log(res)
-        this.tableData = res.data
-        this.total = res.total
+      request.get("/user/page",{
+        params:{
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          username: this.username
+        }
+      }).then(
+          res =>{
+            console.log(res)
+            this.tableData = res.data
+            this.total = res.total
+          })
+    },
+    save(){
+      request.post("/user", this.form).then(res => {
+        if (res) {
+          this.$message.success("success!")
+          this.dialogFormVisible = false
+        } else {
+          this.$message.success("failed!")
+          this.dialogFormVisible = false
+        }
       })
+    },
+    handleAdd(){
+      this.dialogFormVisible = true
+      this.form = {}
+    },
+    reset(){
+      this.username = ""
+      this.load()
     },
     handleSizeChange(pageSize){
       this.pageSize = pageSize

@@ -20,18 +20,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public Integer save(@RequestBody User user){
-        return userService.save(user);
+    public boolean save(@RequestBody User user){
+        return userService.saveUser(user);
     }
 
     @GetMapping
     public List<User> index(){
-        return userMapper.findAll();
+        return userService.list();
     }
 
     @DeleteMapping("/{id}")
-    public Integer delete(@PathVariable Integer id) {
-        return userMapper.deleteById(id);
+    public Boolean delete(@PathVariable Integer id) {
+        return userService.removeById(id);
     }
 
     @GetMapping("/page")
