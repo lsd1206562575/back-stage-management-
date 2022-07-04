@@ -1,6 +1,6 @@
 package com.laisd.vuebackend.controller;
 
-import com.laisd.vuebackend.Service.UserService;
+import com.laisd.vuebackend.service.UserService;
 import com.laisd.vuebackend.entity.User;
 import com.laisd.vuebackend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;

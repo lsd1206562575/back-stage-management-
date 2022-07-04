@@ -1,4 +1,4 @@
-package com.laisd.vuebackend.Service;
+package com.laisd.vuebackend.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.laisd.vuebackend.entity.User;
