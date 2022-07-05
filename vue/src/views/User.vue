@@ -9,8 +9,10 @@
     <div>
       <el-button type="primary" class="el-icon-circle-plus-outline" @click="handleAdd">Add</el-button>
       <el-button type="danger" class="el-icon-remove-outline" @click="delBatch">Delete</el-button>
-      <el-button type="primary" class="el-icon-bottom">Import</el-button>
-      <el-button type="primary" class="el-icon-top">Export</el-button>
+      <el-upload action="http://localhost:9090/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
+        <el-button type="primary" class="el-icon-bottom" style="margin-left: 5px">Import</el-button>
+      </el-upload>
+      <el-button type="primary" class="el-icon-top" @click="exp" style="margin-left: 5px">Export</el-button>
     </div>
     <el-table :data="tableData" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
@@ -164,6 +166,13 @@ export default {
     },
     handleCurrentChange(pageNum){
       this.pageNum = pageNum
+      this.load()
+    },
+    exp() {
+      window.open("http://localhost:9090/user/export")
+    },
+    handleExcelImportSuccess() {
+      this.$message.success("success!")
       this.load()
     }
   }
