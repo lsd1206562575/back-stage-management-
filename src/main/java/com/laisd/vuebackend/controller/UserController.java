@@ -1,13 +1,15 @@
 package com.laisd.vuebackend.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.laisd.vuebackend.common.Result;
-import com.laisd.vuebackend.service.UserService;
+import com.laisd.vuebackend.controller.dto.UserDTO;
 import com.laisd.vuebackend.entity.User;
 import com.laisd.vuebackend.mapper.UserMapper;
+import com.laisd.vuebackend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,17 +28,23 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
-    private UserService userService;
+    private IUserService userService;
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return false;
+        }
+        return userService.login(userDTO);
+    }
 
     @PostMapping
     public boolean save(@RequestBody User user){
-        return userService.saveUser(user);
-    }
-
-    @GetMapping
-    public List<User> index(){
-        return userService.list();
+        return userService.saveOrUpdate(user);
     }
 
     @DeleteMapping("/{id}")

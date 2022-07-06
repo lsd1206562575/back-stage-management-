@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-openeds="['1', '3']" style="min-height: 100%; overflow-x: hidden"
+  <el-menu :default-openeds="['1', '3']" style="min-height: 100%; overflow-x: hidden;"
             router
   >
     <div style="height: 60px; line-height: 60px; text-align: center" >
@@ -18,7 +18,7 @@
       </template>
       <el-menu-item index="/user">
         <i class="el-icon-s-custom"></i>
-        <span slot="title">User_Management</span>
+        <span slot="title">User</span>
       </el-menu-item>
     </el-submenu>
   </el-menu>

@@ -1,5 +1,6 @@
 package com.laisd.vuebackend.service;
 
+import com.laisd.vuebackend.controller.dto.UserDTO;
 import com.laisd.vuebackend.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    boolean login(UserDTO userDTO);
 }
