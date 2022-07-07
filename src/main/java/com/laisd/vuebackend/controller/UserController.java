@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.laisd.vuebackend.common.Constants;
 import com.laisd.vuebackend.common.Result;
 import com.laisd.vuebackend.controller.dto.UserDTO;
 import com.laisd.vuebackend.entity.User;
@@ -33,18 +35,38 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserDTO userDTO) {
+    public Result login(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
         if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
-            return false;
+            return Result.error(Constants.CODE_400, "参数错误");
         }
-        return userService.login(userDTO);
+        return Result.success(userService.login(userDTO));
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody UserDTO userDTO){
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(userService.register(userDTO));
     }
 
     @PostMapping
-    public boolean save(@RequestBody User user){
-        return userService.saveOrUpdate(user);
+    public Result save(@RequestBody User user){
+        return Result.success(userService.saveOrUpdate(user));
+    }
+
+    @GetMapping
+    public List<User> findAll() {return userService.list();}
+
+    @GetMapping("/username/{username}")
+    public Result findone(@PathVariable String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        return Result.success(userService.getOne(queryWrapper));
     }
 
     @DeleteMapping("/{id}")

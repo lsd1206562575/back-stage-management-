@@ -67,7 +67,6 @@
         <el-form-item label="address" >
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">No</el-button>
@@ -112,7 +111,7 @@ export default {
     },
     save(){
       this.request.post("/user", this.form).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("success!")
           this.dialogFormVisible = false
           this.load()
