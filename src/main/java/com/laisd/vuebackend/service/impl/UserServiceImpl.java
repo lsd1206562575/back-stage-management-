@@ -10,6 +10,7 @@ import com.laisd.vuebackend.entity.User;
 import com.laisd.vuebackend.exception.ServiceException;
 import com.laisd.vuebackend.mapper.UserMapper;
 import com.laisd.vuebackend.service.IUserService;
+import com.laisd.vuebackend.utils.TokenUtils;
 import org.springframework.stereotype.Service;
 
 
@@ -30,6 +31,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User one = getUserInfo(userDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, userDTO, true);
+            String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
+            userDTO.setToken(token);
             return userDTO;
         } else {
             throw new ServiceException(Constants.CODE_600, "username or password is wrong");
