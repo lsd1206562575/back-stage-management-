@@ -3,6 +3,7 @@ package com.laisd.vuebackend.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.laisd.vuebackend.common.Constants;
 import com.laisd.vuebackend.controller.dto.UserDTO;
@@ -12,6 +13,8 @@ import com.laisd.vuebackend.mapper.UserMapper;
 import com.laisd.vuebackend.service.IUserService;
 import com.laisd.vuebackend.utils.TokenUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -24,6 +27,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    @Resource
+    private UserMapper userMapper;
 
     private static final Log LOG = Log.get();
 

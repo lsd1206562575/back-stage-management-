@@ -53,7 +53,7 @@
     <el-dialog title="user information" :visible.sync="dialogFormVisible">
       <el-form label-width="120px">
         <el-form-item label="username" >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="nickname" >
           <el-input v-model="form.nickname" autocomplete="off"></el-input>

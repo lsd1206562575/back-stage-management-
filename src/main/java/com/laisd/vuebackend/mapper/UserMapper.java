@@ -1,6 +1,7 @@
 package com.laisd.vuebackend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.laisd.vuebackend.entity.User;
 import org.apache.ibatis.annotations.*;
 

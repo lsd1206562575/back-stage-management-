@@ -12,6 +12,8 @@ const routes = [
     children: [
         {path: 'home', name: 'Home', component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),},
         {path: 'user', name: 'User', component: () => import(/* webpackChunkName: "about" */ '../views/User.vue'),},
+        {path: 'role', name: 'Role', component: () => import(/* webpackChunkName: "about" */ '../views/Role.vue'),},
+        {path: 'menu', name: 'Menu', component: () => import(/* webpackChunkName: "about" */ '../views/Menu.vue'),},
         {path: 'person', name: 'Person', component: () => import(/* webpackChunkName: "about" */ '../views/Person.vue'),},
         {path: 'file', name: 'File', component: () => import(/* webpackChunkName: "about" */ '../views/File.vue'),},
     ]

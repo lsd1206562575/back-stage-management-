@@ -20,6 +20,10 @@
         <i class="el-icon-s-custom"></i>
         <span slot="title">User</span>
       </el-menu-item>
+      <el-menu-item index="/role">
+        <i class="el-icon-user"></i>
+        <span slot="title">Role</span>
+      </el-menu-item>
       <el-menu-item index="/file">
         <i class="el-icon-files"></i>
         <span slot="title">File</span>
