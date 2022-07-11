@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName(value = "sys_user")
 public class User {
@@ -19,4 +21,6 @@ public class User {
     private String email;
     private String phone;
     private String address;
+    @TableField(value = "createtime")
+    private Date createTime;
 }
